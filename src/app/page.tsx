@@ -199,6 +199,7 @@ function ProfileCard({ name, colorScheme, role, hobbies, projects, discord, east
     frost: {
       primary: "text-purple-400",
       secondary: "text-cyan-400",
+      tertiary: "text-cyan-400",
       border: "border-purple-500/50",
       glow: "shadow-[0_0_10px_rgba(168,85,247,0.3)] sm:shadow-[0_0_15px_rgba(168,85,247,0.3)]",
       accent: "bg-gradient-to-r from-purple-500/20 to-cyan-500/20",
