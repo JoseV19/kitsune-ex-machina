@@ -1,26 +1,164 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #050505;
+  --foreground: #33ff33;
+  --foreground-dim: #1a8c1a;
+  --accent: #00ffff;
+  --terminal-glow: rgba(51, 255, 51, 0.15);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --color-foreground-dim: var(--foreground-dim);
+  --color-accent: var(--accent);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-mono), "Courier New", monospace;
+  min-height: 100vh;
+  overflow-x: hidden;
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%2300ffff' d='M12 2L14 8L12 10L10 8L12 2Z'/%3E%3Cpath fill='%2306b6d4' d='M12 10L14 8L15 12L12 22L9 12L10 8L12 10Z'/%3E%3Cpath fill='%23ffffff' d='M11 6L12 4L13 6L12 7L11 6Z' opacity='0.6'/%3E%3C/svg%3E") 12 12, auto;
+}
+
+/* Custom Kunai cursor for interactive elements */
+a, button, [role="button"], .cursor-pointer {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%23ec4899' d='M12 2L14 8L12 10L10 8L12 2Z'/%3E%3Cpath fill='%23f472b6' d='M12 10L14 8L15 12L12 22L9 12L10 8L12 10Z'/%3E%3Cpath fill='%23ffffff' d='M11 6L12 4L13 6L12 7L11 6Z' opacity='0.6'/%3E%3C/svg%3E") 12 12, pointer;
+}
+
+::selection {
+  background: var(--foreground);
+  color: var(--background);
+}
+
+/* CRT Scanlines Overlay */
+.crt-scanlines {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.15) 0px,
+    rgba(0, 0, 0, 0.15) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+}
+
+/* CRT Screen Curvature & Glow */
+.crt-screen {
+  position: relative;
+}
+
+.crt-screen::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    transparent 60%,
+    rgba(0, 0, 0, 0.4) 100%
+  );
+}
+
+/* CRT Flicker Animation */
+@keyframes crt-flicker {
+  0% { opacity: 0.97; }
+  5% { opacity: 1; }
+  10% { opacity: 0.98; }
+  15% { opacity: 1; }
+  20% { opacity: 0.96; }
+  25% { opacity: 1; }
+  30% { opacity: 0.99; }
+  35% { opacity: 1; }
+  40% { opacity: 0.97; }
+  45% { opacity: 1; }
+  50% { opacity: 0.98; }
+  55% { opacity: 1; }
+  60% { opacity: 0.99; }
+  65% { opacity: 1; }
+  70% { opacity: 0.96; }
+  75% { opacity: 1; }
+  80% { opacity: 0.98; }
+  85% { opacity: 1; }
+  90% { opacity: 0.97; }
+  95% { opacity: 1; }
+  100% { opacity: 0.99; }
+}
+
+.crt-flicker {
+  animation: crt-flicker 0.15s infinite;
+}
+
+/* Text Glow Effect */
+.text-glow {
+  text-shadow:
+    0 0 5px var(--foreground),
+    0 0 10px var(--foreground),
+    0 0 20px var(--terminal-glow);
+}
+
+.text-glow-accent {
+  text-shadow:
+    0 0 5px var(--accent),
+    0 0 10px var(--accent),
+    0 0 20px rgba(0, 255, 255, 0.3);
+}
+
+/* Terminal Cursor Blink */
+@keyframes cursor-blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.cursor-blink {
+  animation: cursor-blink 1s infinite;
+}
+
+/* RGB Shift Effect (subtle) */
+@keyframes rgb-shift {
+  0% { text-shadow: -1px 0 #ff0000, 1px 0 #00ffff; }
+  25% { text-shadow: -1px 0 #00ffff, 1px 0 #ff0000; }
+  50% { text-shadow: 1px 0 #ff0000, -1px 0 #00ffff; }
+  75% { text-shadow: 1px 0 #00ffff, -1px 0 #ff0000; }
+  100% { text-shadow: -1px 0 #ff0000, 1px 0 #00ffff; }
+}
+
+.rgb-shift {
+  animation: rgb-shift 4s infinite;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--foreground-dim);
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--foreground);
 }
